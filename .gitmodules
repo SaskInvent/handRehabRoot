@@ -1,0 +1,3 @@
+[submodule "handRehabArduino"]
+	path = handRehabArduino
+	url = https://github.com/suntzuisafterU/handRehabArduino.git

@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 # (usb ports, the device id is may be different each time)
 # TODO: Generalize this statement to allow for running the GUI when hooked up to a windows PC.
 # ser = serial.Serial('/dev/ttyACM0', 9600)
-ser = serial.Serial('COM5', 9600)
+ser = serial.Serial('COM3', 9600)
 
 
 # class Clock(threading.Thread):
@@ -181,20 +181,23 @@ class ThirdUi:
         cancelCalButton.bind("<Button-1>", cancel_cal)
         cancelCalButton.grid(row=3, column=1, sticky=E, padx=4)
 
-        defaultButton = tk.Button(frame, text="Defaul")
-        defaultButton.bind("<Button-1>", init_default_mode)
-        defaultButton.grid(row=0, column=2, sticky=W, padx=4)
+        inflateButton = tk.Button(frame, text="Inflate Fingers")
+        inflateButton.bind("<Button-1>", init_inflate_mode)
+        inflateButton.grid(row=0, column=2, sticky=W, padx=4)
 
         RESET_button = tk.Button(frame, text="RESET")
         RESET_button.bind("<Button-1>", RESET)
         RESET_button.grid(row=1, column = 2, sticky=W, padx=4)
+
+def set_idle_mode(event):
+    ser.write(b'0')
 
 
 def init_calibration_mode(event):
     ser.write(b'1')
 
 
-def init_default_mode(event):
+def init_inflate_mode(event):
     ser.write(b'2')
 
 

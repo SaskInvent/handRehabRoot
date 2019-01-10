@@ -15,8 +15,8 @@ logger = logging.getLogger(__name__)
 # Read serial in from port "ACM0" or "ACM1"
 # (usb ports, the device id is may be different each time)
 # TODO: Generalize this statement to allow for running the GUI when hooked up to a windows PC.
-# ser = serial.Serial('/dev/ttyACM0', 9600)
-ser = serial.Serial('COM3', 9600)
+ser = serial.Serial('/dev/ttyACM0', 9600)
+# ser = serial.Serial('COM3', 9600)
 
 
 # class Clock(threading.Thread):

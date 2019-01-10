@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 # (usb ports, the device id is may be different each time)
 # TODO: Generalize this statement to allow for running the GUI when hooked up to a windows PC.
 # ser = serial.Serial('/dev/ttyACM0', 9600)
-ser = serial.Serial('COM4', 9600)
+ser = serial.Serial('COM5', 9600)
 
 # class Clock(threading.Thread):
 #     """Class to display the time every seconds
@@ -96,7 +96,8 @@ class ConsoleUi:
         # Create a logging handler using a queue
         self.log_queue = queue.Queue()
         self.queue_handler = QueueHandler(self.log_queue)
-        formatter = logging.Formatter('TEST')
+        # Add something to to formatter if you want a specific output prepended to each line
+        formatter = logging.Formatter('')
         self.queue_handler.setFormatter(formatter)
         logger.addHandler(self.queue_handler)
         # Start polling messages from the queue
@@ -104,9 +105,8 @@ class ConsoleUi:
 
     def display(self, record):
         msg = self.queue_handler.format(record)
-        
         self.scrolled_text.configure(state='normal')
-        self.scrolled_text.insert(tk.END, msg + '\n', record.levelname)
+        self.scrolled_text.insert(tk.END, msg.lstrip().rstrip() + '\n', record.levelname)
         self.scrolled_text.configure(state='disabled')
         # Autoscroll to the bottom
         self.scrolled_text.yview(tk.END)
@@ -127,55 +127,6 @@ class FormUi:
 
     def __init__(self, frame):
         self.frame = frame
-        # Create a combobbox to select the logging level
-        values = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
-        self.level = tk.StringVar()
-        ttk.Label(self.frame, text='Level:').grid(column=0, row=0, sticky=W)
-        self.combobox = ttk.Combobox(
-            self.frame,
-            textvariable=self.level,
-            width=25,
-            state='readonly',
-            values=values
-        )
-        self.combobox.current(0)
-        self.combobox.grid(column=1, row=0, sticky=(W, E))
-        # Create a text field to enter a message
-        self.message = tk.StringVar()
-        ttk.Label(self.frame, text='Message:').grid(column=0, row=1, sticky=W)
-        ttk.Entry(self.frame, textvariable=self.message, width=25).grid(column=1, row=1, sticky=(W, E))
-        # Add a button to log the message
-        self.button = ttk.Button(self.frame, text='Submit', command=self.submit_message)
-        self.button.grid(column=1, row=2, sticky=W)
-
-    def submit_message(self):
-        # Get the logging level numeric value
-        lvl = getattr(logging, self.level.get())
-        logger.log(lvl, self.message.get())
-
-
-class ThirdUi:
-
-    def __init__(self, frame):
-        self.frame = frame
-        # ttk.Label(self.frame, text='This is just an example of a third frame').grid(column=0, row=1, sticky=W)
-        # ttk.Label(self.frame, text='With another line here!').grid(column=0, row=4, sticky=W)
-
-        calibrationButton = tk.Button(frame, text="Calibrate Flex Sensor")
-        calibrationButton.bind("<Button-1>", init_calibration_mode)
-        calibrationButton.grid(row=0, column=1, sticky=E, padx=4)
-
-        acceptCalButton = tk.Button(frame, text="Accept Calibration")
-        acceptCalButton.bind("<Button-1>", accept_cal)
-        acceptCalButton.grid(row=1, column=1, sticky=E, padx=4)
-
-        restartCalButton = tk.Button(frame, text="Restart Calibration")
-        restartCalButton.bind("<Button-1>", restart_cal)
-        restartCalButton.grid(row=2, column=1, sticky=E, padx=4)
-
-        cancelCalButton = tk.Button(frame, text="Cancel Calibration")
-        cancelCalButton.bind("<Button-1>", cancel_cal)
-        cancelCalButton.grid(row=3, column=1, sticky=E, padx=4)
 
         inflateButton = tk.Button(frame, text="Inflate Fingers")
         inflateButton.bind("<Button-1>", init_inflate_mode)
@@ -184,6 +135,14 @@ class ThirdUi:
         RESET_button = tk.Button(frame, text="RESET")
         RESET_button.bind("<Button-1>", RESET)
         RESET_button.grid(row=1, column = 2, sticky=W, padx=4)
+
+class ThirdUi:
+
+    def __init__(self, frame):
+        self.frame = frame
+        ttk.Label(self.frame, text='').grid(column=0, row=1, sticky=W)
+        ttk.Label(self.frame, text='With another line here!').grid(column=0, row=4, sticky=W)
+
 
 def set_idle_mode(event):
     ser.write(b'0')

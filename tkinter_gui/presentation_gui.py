@@ -18,34 +18,6 @@ logger = logging.getLogger(__name__)
 # ser = serial.Serial('/dev/ttyACM0', 9600)
 ser = serial.Serial('COM5', 9600)
 
-# class Clock(threading.Thread):
-#     """Class to display the time every seconds
-#
-#     Every 5 seconds, the time is displayed using the logging.ERROR level
-#     to show that different colors are associated to the log levels
-#     """
-#
-#     def __init__(self):
-#         super().__init__()
-#         self._stop_event = threading.Event()
-#
-#     def run(self):
-#         logger.debug('Clock started')
-#         previous = -1
-#         while not self._stop_event.is_set():
-#             now = datetime.datetime.now()
-#             if previous != now.second:
-#                 previous = now.second
-#                 if now.second % 5 == 0:
-#                     level = logging.ERROR
-#                 else:
-#                     level = logging.INFO
-#                 logger.log(level, now)
-#             time.sleep(0.2)
-#
-#     def stop(self):
-#         self._stop_event.set()
-
 
 class SerialConsoleOutput(threading.Thread):
     """Accept Serial input and write to the serial console.
@@ -130,45 +102,28 @@ class FormUi:
 
         inflateButton = tk.Button(frame, text="Inflate Fingers")
         inflateButton.bind("<Button-1>", init_inflate_mode)
-        inflateButton.grid(row=0, column=2, sticky=W, padx=4)
+        inflateButton.grid(row=0, column=0, sticky=W, padx=4)
 
         RESET_button = tk.Button(frame, text="RESET")
         RESET_button.bind("<Button-1>", RESET)
-        RESET_button.grid(row=1, column = 2, sticky=W, padx=4)
+        RESET_button.grid(row=1, column=0, sticky=W, padx=4)
 
 class ThirdUi:
 
     def __init__(self, frame):
         self.frame = frame
-        ttk.Label(self.frame, text='').grid(column=0, row=1, sticky=W)
-        ttk.Label(self.frame, text='With another line here!').grid(column=0, row=4, sticky=W)
+        ttk.Label(self.frame, text='Instructions:').grid(column=0, row=1, sticky=W)
+        ttk.Label(self.frame, text='1. Set the potentiometer so trueFlex reads between 400 and 600.').grid(column=0, row=2, sticky=W)
+        ttk.Label(self.frame, text='2. Use the potentiometer to control the inflation and deflation of the finger actuators.').grid(column=0, row=3, sticky=W)
+        ttk.Label(self.frame, text='3. If the system goes into Emergency Shutoff mode (You can no longer control the actuator and the output changes) then hit the RESET button and return to step 1.\n    You may have to hit the RESET button multiple times.').grid(column=0, row=4, sticky=W)
 
 
 def set_idle_mode(event):
     ser.write(b'0')
 
 
-def init_calibration_mode(event):
-    ser.write(b'1')
-
-
 def init_inflate_mode(event):
     ser.write(b'2')
-
-
-def accept_cal(event):
-    # char 'a' for accept.
-    ser.write(b'a')
-
-
-def restart_cal(event):
-    # char 'r' for restart
-    ser.write(b'r')
-
-
-def cancel_cal(event):
-    # char 'c' for cancel
-    ser.write(b'c')
 
 
 def RESET(event):

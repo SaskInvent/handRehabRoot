@@ -1,0 +1,4 @@
+# If you are working on the RPi and want to make a commit you should not be saving your personal credentials onto
+# any of the shared devices.  To avoid this use the following command as a template to set the user name and 
+# email for a one time commit
+git -c "user.name=Your Name" -c "user.email=Your@email" commit -m ...

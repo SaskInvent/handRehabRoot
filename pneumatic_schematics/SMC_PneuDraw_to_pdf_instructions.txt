@@ -1,0 +1,13 @@
+
+SMC Pneu Draw has its own file format, which is not protable.
+It can export files in .dxf format though.
+
+After exporting as a .dxf, us the program downloaded from the following website to convert the
+.dxf file to a pdf.
+link: http://www.verypdf.com/wordpress/201207/how-to-convert-dxf-to-pdf-by-command-line-program-30352.html
+
+Put the location of the program on your systems PATH environment variable.
+Then run `dwg2pdf` from the command line for a list of instructions.
+
+Here is the command to create a pdf in black and white (color doesn't work well).
+dwg2pdf -p 0 -b 1 -i draft_2.dxf -o draft_2.pdf

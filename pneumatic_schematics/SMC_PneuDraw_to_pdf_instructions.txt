@@ -10,4 +10,4 @@ Put the location of the program on your systems PATH environment variable.
 Then run `dwg2pdf` from the command line for a list of instructions.
 
 Here is the command to create a pdf in black and white (color doesn't work well).
-dwg2pdf -p 0 -b 1 -i draft_2.dxf -o draft_2.pdf
+dwg2pdf -p 0 -b 1 -i draft_3.dxf -o draft_3.pdf

@@ -1,4 +1,5 @@
 
+SMC Pneu Draw source: https://www.smc.eu/portal_ssl/webpages/01_products/engineering_tools/pneudraw/pneudraw.jsp
 SMC Pneu Draw has its own file format, which is not protable.
 It can export files in .dxf format though.
 
